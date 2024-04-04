@@ -7,13 +7,11 @@ module "tfstate" {
   resource_group_name = module.resource_group["tfstate"].name
 
   settings = {
-    name                          = "tfstate"
-    account_kind                  = "BlobStorage"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    access_tier                   = "Hot"
-    is_hns_enabled                = false
-    public_network_access_enabled = true
+    name           = "tfstate"
+    account_kind   = "BlobStorage"
+    account_tier   = "Standard"
+    access_tier    = "Hot"
+    is_hns_enabled = false
     blob_properties = {
       versioning_enabled = true
     }

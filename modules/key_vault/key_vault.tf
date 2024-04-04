@@ -9,20 +9,15 @@ resource "azurerm_key_vault" "key_vault" {
   enabled_for_disk_encryption     = var.settings.enabled_for_disk_encryption
   enabled_for_template_deployment = var.settings.enabled_for_template_deployment
 
-  purge_protection_enabled      = var.settings.purge_protection_enabled
-  public_network_access_enabled = var.settings.public_network_access_enabled
+  purge_protection_enabled      = true
+  public_network_access_enabled = false
   soft_delete_retention_days    = var.settings.soft_delete_retention_days
 
   enable_rbac_authorization = true
 
-  dynamic "network_acls" {
-    for_each = var.settings.network_acls == null ? [] : [var.settings.network_acls]
-    content {
-      bypass                     = network_acls.value.bypass
-      default_action             = network_acls.value.default_action
-      ip_rules                   = network_acls.value.ip_rules
-      virtual_network_subnet_ids = [for value in network_acls.value.virtual_network_subnet_keys : var.subnets[value]]
-    }
+  network_acls {
+    bypass         = "AzureServices"
+    default_action = "Deny"
   }
 }
 

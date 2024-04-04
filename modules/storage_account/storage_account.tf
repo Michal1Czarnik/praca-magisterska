@@ -5,25 +5,20 @@ resource "azurerm_storage_account" "storage_account" {
 
   account_kind             = var.settings.account_kind
   account_tier             = var.settings.account_tier
-  account_replication_type = var.settings.account_replication_type
+  account_replication_type = "GRS"
   access_tier              = var.settings.access_tier
 
-  enable_https_traffic_only = var.settings.enable_https_traffic_only
-  min_tls_version           = var.settings.min_tls_version
+  enable_https_traffic_only = true
+  min_tls_version           = "TLS1_2"
 
-  allow_nested_items_to_be_public = var.settings.allow_nested_items_to_be_public
-  public_network_access_enabled   = var.settings.public_network_access_enabled
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = false
 
   is_hns_enabled = var.settings.is_hns_enabled
 
-  dynamic "network_rules" {
-    for_each = var.settings.network_rules == null ? [] : [var.settings.network_rules]
-    content {
-      default_action             = network_rules.value.default_action
-      bypass                     = network_rules.value.bypass
-      ip_rules                   = network_rules.value.ip_rules
-      virtual_network_subnet_ids = try([for value in network_rules.value.virtual_network_subnet_key : var.subnets[value]], [])
-    }
+  network_rules {
+    default_action = "Deny"
+    bypass         = "AzureServices"
   }
 
   dynamic "blob_properties" {

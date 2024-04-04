@@ -9,6 +9,9 @@ resource "azurerm_public_ip" "public_ip" {
 }
 
 resource "azurerm_firewall" "firewall" {
+  #checkov:skip=CKV_AZURE_219:collection rules are in use
+  #checkov:skip=CKV_AZURE_216:collection rules are in use
+
   name                = azurecaf_name.fw.result
   location            = coalesce(var.settings.location, var.global_settings.default_location)
   resource_group_name = var.resource_group_name

@@ -1,12 +1,19 @@
 resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
+  #checkov:skip=CKV_AZURE_172:SS CSI is not in use
+  #checkov:skip=CKV_AZURE_141:local is needed for now
+  #checkov:skip=CKV_AZURE_117:not needed
+  #checkov:skip=CKV_AZURE_116:in vars
+  #checkov:skip=CKV_AZURE_4:in vars
+
   name                = azurecaf_name.aks.result
   location            = coalesce(var.settings.location, var.global_settings.default_location)
   resource_group_name = var.resource_group_name
 
-  sku_tier                = var.settings.sku_tier
-  kubernetes_version      = var.settings.kubernetes_version
-  private_cluster_enabled = var.settings.private_cluster_enabled
-  private_dns_zone_id     = var.private_dns_zone_id
+  sku_tier                  = var.settings.sku_tier
+  kubernetes_version        = var.settings.kubernetes_version
+  private_cluster_enabled   = var.settings.private_cluster_enabled
+  private_dns_zone_id       = var.private_dns_zone_id
+  automatic_channel_upgrade = "stable"
 
   dns_prefix                 = var.settings.dns_prefix
   dns_prefix_private_cluster = var.settings.dns_prefix == null ? azurecaf_name.aks.result : null
@@ -23,7 +30,8 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
     vm_size                      = var.settings.default_node_pool.vm_size
     enable_node_public_ip        = var.settings.default_node_pool.enable_node_public_ip
     enable_auto_scaling          = var.settings.default_node_pool.enable_auto_scaling
-    max_pods                     = var.settings.default_node_pool.max_pods
+    enable_host_encryption       = true
+    max_pods                     = 50
     only_critical_addons_enabled = var.settings.default_node_pool.only_critical_addons_enabled
     orchestrator_version         = var.settings.default_node_pool.orchestrator_version == null ? var.settings.kubernetes_version : var.settings.default_node_pool.orchestrator_version
     os_disk_size_gb              = var.settings.default_node_pool.os_disk_size_gb
@@ -55,14 +63,6 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
     }
   }
 
-  dynamic "key_vault_secrets_provider" {
-    for_each = var.settings.key_vault_secrets_provider == null ? [] : [var.settings.key_vault_secrets_provider]
-    content {
-      secret_rotation_enabled  = key_vault_secrets_provider.value.secret_rotation_enabled
-      secret_rotation_interval = key_vault_secrets_provider.value.secret_rotation_interval
-    }
-  }
-
   dynamic "kubelet_identity" {
     for_each = var.settings.kubelet_identity == null ? [] : [var.settings.kubelet_identity]
     content {
@@ -86,8 +86,10 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
 resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
   for_each = var.settings.additional_node_pools == null ? {} : var.settings.additional_node_pools
 
-  name                  = each.value.name
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.kubernetes_cluster.id
-  vm_size               = each.value.vm_size
-  node_count            = each.value.node_count
+  name                   = each.value.name
+  kubernetes_cluster_id  = azurerm_kubernetes_cluster.kubernetes_cluster.id
+  vm_size                = each.value.vm_size
+  node_count             = each.value.node_count
+  enable_host_encryption = true
+  max_pods               = 50
 }

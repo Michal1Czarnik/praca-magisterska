@@ -1,4 +1,6 @@
 resource "azurerm_postgresql_flexible_server" "postgresql_flexible_server" {
+  #checkov:skip=CKV_AZURE_136:in vars
+
   name                = var.settings.name # not supported by caf
   resource_group_name = var.resource_group_name
   location            = coalesce(var.settings.location, var.global_settings.default_location)

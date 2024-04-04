@@ -7,8 +7,9 @@ resource "random_password" "password" {
 }
 
 resource "azurerm_key_vault_secret" "key_vault_secret" {
-  name         = format("%s-password", var.settings.name)
-  value        = random_password.password.result
-  key_vault_id = var.key_vault_id
-  content_type = "password"
+  name            = format("%s-password", var.settings.name)
+  value           = random_password.password.result
+  key_vault_id    = var.key_vault_id
+  content_type    = "password"
+  expiration_date = "2025-12-30T20:00:00Z"
 }

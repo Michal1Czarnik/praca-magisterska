@@ -8,6 +8,8 @@ resource "azurerm_public_ip" "public_ip" {
 
 
 resource "azurerm_application_gateway" "application_gateway" {
+  #checkov:skip=CKV_AZURE_218:ACIG is configured
+  #checkov:skip=CKV_AZURE_217:ACIG is configured
   name                = azurecaf_name.agw.result
   location            = coalesce(var.settings.location, var.global_settings.default_location)
   resource_group_name = var.resource_group_name

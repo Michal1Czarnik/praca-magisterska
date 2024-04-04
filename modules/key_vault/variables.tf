@@ -21,18 +21,10 @@ variable "settings" {
     enabled_for_deployment          = optional(string)
     enabled_for_disk_encryption     = optional(string)
     enabled_for_template_deployment = optional(string)
-    purge_protection_enabled        = optional(bool)
-    public_network_access_enabled   = optional(bool)
     soft_delete_retention_days      = optional(number)
     enable_rbac_authorization       = optional(bool)
     rbac_permissions                = optional(map(string))
-    network_acls = optional(object({
-      bypass                      = string
-      default_action              = string
-      ip_rules                    = optional(set(string))
-      virtual_network_subnet_keys = optional(set(string))
-    }))
-    private_endpoint = any
+    private_endpoint                = any
   })
 }
 

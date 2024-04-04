@@ -14,24 +14,13 @@ variable "global_settings" {
 variable "settings" {
   description = "Settings for the storage account"
   type = object({
-    name                            = string
-    location                        = optional(string)
-    resource_group_key              = optional(string)
-    account_kind                    = optional(string)
-    account_tier                    = string
-    account_replication_type        = string
-    access_tier                     = optional(string)
-    enable_https_traffic_only       = optional(bool, true)
-    min_tls_version                 = optional(string, "TLS1_2")
-    allow_nested_items_to_be_public = optional(bool, false)
-    public_network_access_enabled   = optional(bool, false)
-    is_hns_enabled                  = optional(bool)
-    network_rules = optional(object({
-      default_action             = string
-      bypass                     = optional(set(string))
-      ip_rules                   = optional(set(string))
-      virtual_network_subnet_key = optional(set(string))
-    }))
+    name               = string
+    location           = optional(string)
+    resource_group_key = optional(string)
+    account_kind       = optional(string)
+    account_tier       = string
+    access_tier        = optional(string)
+    is_hns_enabled     = optional(bool)
     blob_properties = optional(object({
       versioning_enabled  = optional(bool)
       change_feed_enabled = optional(bool)

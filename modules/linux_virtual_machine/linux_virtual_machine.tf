@@ -22,6 +22,7 @@ resource "azurerm_linux_virtual_machine" "linux_virtual_machine" {
   network_interface_ids = [azurerm_network_interface.network_interface.id]
 
   disable_password_authentication = true
+  allow_extension_operations      = false
 
   custom_data = var.settings.custom_data
 

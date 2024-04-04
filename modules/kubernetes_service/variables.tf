@@ -32,7 +32,6 @@ variable "settings" {
       vm_size                      = string
       enable_node_public_ip        = optional(bool)
       enable_auto_scaling          = optional(bool)
-      max_pods                     = optional(number)
       only_critical_addons_enabled = optional(bool)
       orchestrator_version         = optional(string)
       os_disk_size_gb              = optional(number)
@@ -54,10 +53,6 @@ variable "settings" {
     identity = optional(object({
       type         = string
       identity_ids = optional(set(string))
-    }))
-    key_vault_secrets_provider = optional(object({
-      secret_rotation_enabled  = optional(bool)
-      secret_rotation_interval = optional(string)
     }))
     kubelet_identity = optional(object({
       client_id                 = optional(string)
