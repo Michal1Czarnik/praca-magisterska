@@ -1,5 +1,3 @@
-data "azuread_client_config" "current" {}
-
 data "azurerm_subscription" "current" {}
 
 data "terraform_remote_state" "launchpad" {

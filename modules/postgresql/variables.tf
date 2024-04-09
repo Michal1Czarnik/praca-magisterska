@@ -52,6 +52,6 @@ variable "delegated_subnet_id" {
 }
 
 variable "key_vault_id" {
-  default = "The ID of the key vault where the admin password should be stored"
+  description = "The ID of the key vault where the admin password should be stored"
   type    = string
 }

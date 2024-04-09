@@ -18,5 +18,6 @@ variable "kubernetes_services" {
 
 variable "appgw_enabled" {
   description = "Is AppGW enabled?"
+  type = bool
   default     = false
 }

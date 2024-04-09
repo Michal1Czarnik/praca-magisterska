@@ -6,7 +6,7 @@ resource "azurerm_network_interface" "network_interface" {
 
   ip_configuration {
     name                          = azurecaf_name.nic.result
-    subnet_id                     = lookup(var.subnets, var.settings.subnet_key)
+    subnet_id                     = var.subnets[var.settings.subnet_key]
     private_ip_address_allocation = var.settings.private_ip_address == null ? "Dynamic" : "Static"
     private_ip_address            = var.settings.private_ip_address
   }

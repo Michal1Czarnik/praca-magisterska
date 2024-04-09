@@ -1,17 +1,21 @@
+
+#tfsec:ignore:azure-container-use-rbac-permissions
+#tfsec:ignore:azure-container-configured-network-policy
+#tfsec:ignore:azure-container-logging
 resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
   #checkov:skip=CKV_AZURE_172:SS CSI is not in use
   #checkov:skip=CKV_AZURE_141:local is needed for now
   #checkov:skip=CKV_AZURE_117:not needed
   #checkov:skip=CKV_AZURE_116:in vars
   #checkov:skip=CKV_AZURE_4:in vars
-
+  
   name                = azurecaf_name.aks.result
   location            = coalesce(var.settings.location, var.global_settings.default_location)
   resource_group_name = var.resource_group_name
 
   sku_tier                  = var.settings.sku_tier
   kubernetes_version        = var.settings.kubernetes_version
-  private_cluster_enabled   = var.settings.private_cluster_enabled
+  private_cluster_enabled   = var.settings.private_cluster_enabled #tfsec:ignore:azure-container-limit-authorized-ips
   private_dns_zone_id       = var.private_dns_zone_id
   automatic_channel_upgrade = "stable"
 

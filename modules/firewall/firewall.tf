@@ -20,7 +20,7 @@ resource "azurerm_firewall" "firewall" {
 
   ip_configuration {
     name                 = format("%s-ip_configuration", azurecaf_name.fw.result)
-    subnet_id            = lookup(var.subnets, var.settings.firewall.subnet_key)
+    subnet_id            = var.subnets[var.settings.firewall.subnet_key]
     public_ip_address_id = azurerm_public_ip.public_ip.id
   }
 

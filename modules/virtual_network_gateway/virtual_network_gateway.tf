@@ -26,7 +26,7 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   ip_configuration {
     name                          = format("%s-ip_config", azurecaf_name.vgw.result)
     private_ip_address_allocation = var.settings.virtual_network_gateway.ip_configuration.private_ip_address_allocation
-    subnet_id                     = lookup(var.subnets, var.settings.virtual_network_gateway.ip_configuration.subnet_key)
+    subnet_id                     = var.subnets[var.settings.virtual_network_gateway.ip_configuration.subnet_key]
     public_ip_address_id          = var.settings.public_ip != null ? azurerm_public_ip.public_ip[0].id : null
   }
 

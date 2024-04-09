@@ -45,4 +45,5 @@ variable "private_connection_resource_id" {
 
 variable "private_dns_zone_ids" {
   description = "The map containing private DNS zones"
+  type = any
 }
