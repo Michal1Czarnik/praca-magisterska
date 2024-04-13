@@ -25,7 +25,7 @@ resource "azurerm_role_assignment" "acig_sub_reader" {
 
   scope                = data.azurerm_subscription.current.id
   role_definition_name = "Reader"
-  principal_id         = module.kubernetes_service["app"].agic_mi_id
+  principal_id         = module.kubernetes_service["k8s01"].agic_mi_id
 }
 
 resource "azurerm_role_assignment" "acig_appgw_contributor" {
@@ -33,7 +33,7 @@ resource "azurerm_role_assignment" "acig_appgw_contributor" {
 
   scope                = module.application_gateway[0].id
   role_definition_name = "Contributor"
-  principal_id         = module.kubernetes_service["app"].agic_mi_id
+  principal_id         = module.kubernetes_service["k8s01"].agic_mi_id
 }
 
 resource "azurerm_role_assignment" "acig_network_contributor" {
@@ -41,5 +41,5 @@ resource "azurerm_role_assignment" "acig_network_contributor" {
 
   scope                = data.azurerm_subscription.current.id
   role_definition_name = "Network Contributor"
-  principal_id         = module.kubernetes_service["app"].agic_mi_id
+  principal_id         = module.kubernetes_service["k8s01"].agic_mi_id
 }
